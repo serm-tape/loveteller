@@ -17,10 +17,11 @@ class Landing extends Component{
 	}
 
 	login(){
+		const redirect = '/' + (this.location && this.location.query && this.location.query.mode || 'compose')
 		if(!this.props.fbid){
-			this.props.login(browserHistory.push,'/compose')
+			this.props.login(browserHistory.push, redirect)
 		}else{
-			browserHistory.push('/compose')
+			browserHistory.push(redirect)
 		}
 	}
 }

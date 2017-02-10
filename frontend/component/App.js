@@ -40,8 +40,6 @@ class App extends Component {
 	render(){
 		if (!this.state.sdkLoaded){
 			return (<p> Initializing ... </p>)
-		}else if(!this.state.fbid){
-			
 		}else{
 			const cs = React.cloneElement( this.props.children, {
 				fbid: this.state.fbid,
@@ -50,11 +48,6 @@ class App extends Component {
 			})
 			return cs
 		}
-		return (
-			<div className="centerScreen">
-				<input type="image" src="img/fblogin.png" alt="fblogin" onClick={this.login.bind(this)}/>
-			</div>
-		)
 	}
 
 	login(then){
