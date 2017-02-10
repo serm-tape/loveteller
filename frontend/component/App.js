@@ -7,6 +7,7 @@ class App extends Component {
 			sdkLoaded: false,
 			fbid: null,
 			fbToken: null,
+			fbMounted: false,
 		}
 	}
 
@@ -44,6 +45,7 @@ class App extends Component {
 			const cs = React.cloneElement( this.props.children, {
 				fbid: this.state.fbid,
 				fbToken: this.state.fbToken,
+				fbMounted: this.state.fbMounted,
 				login: this.login.bind(this)
 			})
 			return cs
@@ -59,11 +61,12 @@ class App extends Component {
 		)
 	}
 
-	changeAppState(authResponse, then){
+	changeAppState(authResponse){
+		console.log(authResponse)
 		this.setState({
-			isLoggedIn:true,
 			fbid: authResponse.userID,
 			fbToken: authResponse.accessToken,
+			fbMounted: true,
 		});
 	}
 }

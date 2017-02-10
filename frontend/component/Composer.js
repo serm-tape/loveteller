@@ -14,6 +14,7 @@ class Composer extends Component {
 			valid:{
 				target: false,
 				message: false,
+				message2: false,
 			}
 		}
 	}
@@ -27,20 +28,28 @@ class Composer extends Component {
 					type='text'
 					className='form-control'
 					name='target'
-					placeholder='https://www.facebook.com/that.girl'
+					placeholder='https://www.facebook.com/that.girl.that.guy'
 				/><br/>
-				ข้อความของคุณ
+				ข้อความที่คุณต้องการให้เค้าเห็น
 				<input
 					onChange={this.updateFormValue.bind(this)}
 					type='text'
 					className='form-control'
 					name='message'
-					placeholder='อยากเป็นแฟนจังเลย'
+					placeholder='จีบนานแล้วนะ'
+				/><br/>
+				แต่ถ้าเป็นคนอื่นมาเปิด อยากบอกคนเหล่านั้นว่าอะไร
+				<input
+					onChange={this.updateFormValue.bind(this)}
+					type='text'
+					className='form-control'
+					name='message2'
+					placeholder='อย่างแกน่าจะได้ขึ้นคาน 555'
 				/><br/>
 				<button
 					className='btn btn-primary'
 					onClick={this.compose.bind(this)}
-					disabled={!(this.state.valid.target || this.state.valid.message)}
+					disabled={!(this.state.valid.target || this.state.valid.message || this.state.valid.message2)}
 				>
 				แชร์ แล้วลุ้นให้เค้ามาอ่าน
 				</button>
@@ -60,6 +69,7 @@ class Composer extends Component {
 		switch(key){
 			case 'target': return {target: validateUrl(value)}
 			case 'message': return {message: value.trim()}
+			case 'message2': return {message2: value.trim()}
 		}
 	}
 
@@ -74,6 +84,9 @@ class Composer extends Component {
 			{headers:{fbid:this.props.fbid, fbToken:this.props.accessToken}}
 		).then( response => {
 			console.log(response)
+			FB.feed({
+
+			})
 		})
 	}
 }

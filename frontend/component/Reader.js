@@ -8,34 +8,47 @@ class Reader extends Component{
     constructor(){
         super()
         this.state = {
-            from: '',
-            message: ''
+            from: null,
+            message: null,
+            name: 'A facebook user'
         }
     }
 
-    componentWillMount(){
-        FB.api(this.props.params.from, resp => {this.setState({from:resp.data.name})})
-        axios.get(
-            `/api/v1/letter/${this.props.params.from}/`,
-            {headers:{fbid:this.props.fbid, fbToken:this.props.accessToken}},
-            ( response ) => {
-                this.setState({message: response.message})
-            }
-        )
-    }
-
-    render(){
-         if (!this.state.from && !this.state.message){
-            return (<h1> Openning ... </h1>)
-        }else{
-            return (
-                <div>
-                    {this.from} Want to tell you that, <br/>
-                    {this.state.message}
-                    <button className="btn btn-primary" onClick={FB.ui.send()}> Tell him/her that you think the same </button>
-                    <button className="btn" onClick={()=>{browserHistory.push('/compose')}}> Make one yourself </button>
-                </div>
+    componentDidUpdate(nextProps){
+        if(nextProps.fbMounted != this.props.fbMounted){
+            FB.api(
+                `/${this.props.fbid}`,
+                (resp)=>{
+                    this.setState({name:resp.name})
+                    axios.get(
+                        `/api/v1/letter/${this.props.params.from}/`,
+                        {headers:{fbid:this.props.fbid, fbToken:this.props.accessToken}},
+                        ( response ) => {
+                            this.setState({message: response.message})
+                        }
+                    )
+                }
             )
         }
     }
+
+    render(){
+        return (
+            <div>
+                {this.state.name || "มีบางคน" } อยากจะบอกคุณว่า <br/>
+                {this.state.message || (<div><i className="fa fa-cog fa-spin" />กำลังเปิดข้อความ</div>)}
+                <button 
+                    className="btn btn-primary"
+                    onClick={ () => {
+                        FB.ui({method:'send', to:this.props.fbid, link:'www.facebook.com'})
+                    }}
+                >
+                    ตอบกลับว่าคุณก็คิดเช่นเดียวกัน
+                </button>
+                <button className="btn" onClick={()=>{browserHistory.push('/compose')}}> สร้างจดหมายของคุณเองบ้าง </button>
+            </div>
+        )
+    }
 }
+
+export default Reader
