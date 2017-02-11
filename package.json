@@ -40,7 +40,7 @@
   "dependencies": {
     "axios": "^0.15.3",
     "bluebird": "^3.4.7",
-    "firebase-admin": "^4.1.0",
+    "firebase": "^3.6.9",
     "font-awesome": "^4.7.0",
     "fs-extra": "^2.0.0",
     "helmet": "^3.4.0",
