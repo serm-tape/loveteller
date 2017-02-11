@@ -78,11 +78,8 @@ Promise.resolve()
     return setUpStaticFile(app);
 })
 .then(function() {
-    var setupDatabase = require(path.join(BASE_PATH, "setup_database.js"));
-    return setupDatabase();
-})
-.then(function() {
     app.listen(3004, function () {
+        logger.info("Please set up your database at api/setup ");
     	logger.info('Example app listening on port 3004!');
     });
 })
