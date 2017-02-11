@@ -58,7 +58,7 @@ function setupMiddleware(app) {
 
     middlewareFiles.forEach(function(file){
         var middlewareObj = require(file.path);
-        app.use("", middlewareObj);
+        app.use("/api", middlewareObj);
     });
     logger.debug("COMPLETE ADD MIDDLE WARE");
 }
@@ -73,7 +73,7 @@ function setupRoute(app) {
 
     routeFiles.forEach(function(file){
         var routeObj = require(file.path);
-        app.use("", routeObj);
+        app.use("/api", routeObj);
     });
     logger.debug("COMPLETE ADD ROUTE");
 }

@@ -6,8 +6,6 @@ import express from 'express';
 import path from 'path';
 var fs = Promise.promisifyAll(require("fs-extra"));
 
-
-
 //////////////////////
 // SETUP PROMISE
 /////////////////////
@@ -65,6 +63,11 @@ function setUpStaticFile(app) {
 const api = express.Router();
 const app = express();
 
+
+process.on('uncaughtException', function (err) {
+    logger.fatal("UNCAUGHTEXCEPTION|"+err+" "+err.stack);
+});
+
 Promise.resolve()
 .then(function() {
     logger.info("START ADD MIDDLE WARE AND ROUTE");
@@ -73,6 +76,10 @@ Promise.resolve()
 .then(function() {
     logger.info("START ADD STATIC");
     return setUpStaticFile(app);
+})
+.then(function() {
+    var setupDatabase = require(path.join(BASE_PATH, "setup_database.js"));
+    return setupDatabase();
 })
 .then(function() {
     app.listen(3004, function () {
