@@ -23,7 +23,7 @@ class Root extends Component{
 					<Route path="/" component={App}>
 						<IndexRoute component={Landing} />
 						<Route path="compose" component={Composer} />
-						<Route path="read/:from" component={Reader} />
+						<Route path="read/:linkId" component={Reader} />
 					</Route>
 				</Router>
 			//</Provider>

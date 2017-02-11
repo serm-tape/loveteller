@@ -54,9 +54,9 @@ class App extends Component {
 
 	login(then){
 		FB.login(
-			()=>{
+			(authResponse)=>{
 				this.changeAppState.bind(this),
-				then()
+				then(authResponse)
 			},{scope:'email, user_friends'}
 		)
 	}

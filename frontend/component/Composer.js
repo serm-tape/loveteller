@@ -22,13 +22,13 @@ class Composer extends Component {
 	render(){
 		return (
 			<div>
-				url facebook ของคนนั้น
+				ชื่อ facebook ของเค้าคนนั้น
 				<input
 					onChange={this.updateFormValue.bind(this)}
 					type='text'
 					className='form-control'
 					name='target'
-					placeholder='https://www.facebook.com/that.girl.that.guy'
+					placeholder='ชื่อ นามสกุล'
 				/><br/>
 				ข้อความที่คุณต้องการให้เค้าเห็น
 				<input
@@ -49,7 +49,7 @@ class Composer extends Component {
 				<button
 					className='btn btn-primary'
 					onClick={this.compose.bind(this)}
-					disabled={!(this.state.valid.target || this.state.valid.message || this.state.valid.message2)}
+					disabled={!(this.state.valid.target && this.state.valid.message && this.state.valid.message2)}
 				>
 				แชร์ แล้วลุ้นให้เค้ามาอ่าน
 				</button>
@@ -67,7 +67,7 @@ class Composer extends Component {
 
 	validate(key, value){
 		switch(key){
-			case 'target': return {target: validateUrl(value)}
+			case 'target': return {target: validateName(value)}
 			case 'message': return {message: value.trim()}
 			case 'message2': return {message2: value.trim()}
 		}
@@ -75,25 +75,30 @@ class Composer extends Component {
 
 	compose(){
 		axios.post(
-			'/api/v1/compose/',
+			'/api/links/',
 			{
-				writer: this.props.fbid,
-				message: this.state.valid.message,
-				target: this.state.valid.target
+				message1: this.state.valid.message,
+				message2: this.state.valid.message2,
+				fbName: this.state.valid.target
 			},
-			{headers:{fbid:this.props.fbid, fbToken:this.props.accessToken}}
+			{headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}}
 		).then( response => {
-			console.log(response)
-			FB.feed({
-
+			FB.ui({
+				method: 'feed',
+				link: `${window.location.host}/read/${response.data.linkId}`,
+				name: 'วาเลนไทน์นี้ เรามีเรื่องจะบอก',
+				caption: 'คุณจะใช้คนคนนั้นหรือไม่ คลิก',
+				description: 'แอบชอบใคร อยากรู้ว่าเค้าคิดเหมือนกันไหม ให้ Love teller ช่วยบอก',
 			})
+		}).catch(e => {
+			window.alert('error')
 		})
 	}
 }
 
-function validateUrl(url){
-	const token = url.trim().split(/[\/\?]+/)
-	return token.length >= 3 && token[0]=='https:' && token[1]=='www.facebook.com' && token[2]
+function validateName(name){
+	const token = name.split('(')
+	return token[0].trim()
 }
 
 function extractUrl(url){

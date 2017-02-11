@@ -17,9 +17,13 @@ class Landing extends Component{
 	}
 
 	login(){
-		const redirect = '/' + (this.location && this.location.query && this.location.query.mode || 'compose')
+		const redirect = '/' + (this.props.routes[1] && this.props.routes[1].path || 'compose')
 		if(!this.props.fbid){
-			this.props.login(browserHistory.push, redirect)
+			this.props.login((response)=>{
+				console.log(response)
+				if(response)
+					browserHistory.push(redirect)
+			})
 		}else{
 			browserHistory.push(redirect)
 		}
