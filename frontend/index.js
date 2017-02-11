@@ -4,7 +4,7 @@ import { render } from 'react-dom'
 import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router'
 //import { createStore, applyMiddleware, compose } from 'redux'
 //import { Provider } from 'react-redux'
-import { App, Hello }  from './component'
+import { App, Landing, Composer, Reader }  from './component'
 //import dispatchFunctionMW from './middleware/thunk'
 //import userState from './reducer/userReducer'
 
@@ -21,7 +21,9 @@ class Root extends Component{
 			//<Provider store={store}>
 				<Router history={browserHistory}>
 					<Route path="/" component={App}>
-						<IndexRoute component={Hello} />
+						<IndexRoute component={Landing} />
+						<Route path="compose" component={Composer} />
+						<Route path="read/:from" component={Reader} />
 					</Route>
 				</Router>
 			//</Provider>
