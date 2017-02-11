@@ -25,17 +25,20 @@ router.get("/links/:linkId/letter", function(req, res) {
 
         if (letter.from === req.header("fbId")) {
             res.json({
+                fbId : letter.from,
                 message1 : letter.message1,
                 message2 : letter.message2
             });
             return;
         }
 
-        var returnMessage = null;
+        var returnMessage = {
+            fbId : letter.from
+        };
         if (letter.to === facebookInfo.data.name) {
-            returnMessage = letter.message1;
+            returnMessage.message1 = letter.message1;
         } else {
-            returnMessage = letter.message2;
+            returnMessage.message1 = letter.message2;
         }
         res.json(returnMessage);
 
