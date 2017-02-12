@@ -23,6 +23,11 @@ router.get("/links/:linkId/letter", function(req, res) {
         var facebookInfo = result.facebookInfo;
         var letter = result.snapshot.val();
 
+        var updateData = {
+            targetRead : letter.targetRead | 0,
+            anotherRead :  letter.anotherRead | 0
+        };
+
         if (letter.from === req.header("fbId")) {
             res.json({
                 fbId : letter.from,
@@ -37,10 +42,16 @@ router.get("/links/:linkId/letter", function(req, res) {
         };
         if (letter.to === facebookInfo.data.name) {
             returnMessage.message1 = letter.message1;
+            updateData.targetRead = updateData.targetRead + 1
         } else {
             returnMessage.message1 = letter.message2;
+            updateData.anotherRead = updateData.anotherRead + 1
         }
-        res.json(returnMessage);
+
+        return linkRef.update(updateData)
+        .then(function() {
+            res.json(returnMessage);
+        })
 
     })
     .catch(function(ex){

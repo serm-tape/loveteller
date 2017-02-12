@@ -4,6 +4,7 @@ var util = require("util");
 var BASE_PATH = process.env.NODE_ENV_BASE_PATH || global.BASE_PATH ;
 var CommonUtil = require(path.join(BASE_PATH, "lib/CommonUtil.js"));
 var ErrorCode = require(path.join(BASE_PATH, "lib/ErrorCode.js"));
+var FacebookUtil = require(path.join(BASE_PATH, "lib/FacebookUtil.js"));
 var logger = CommonUtil.createLogger(CommonUtil.filepathToLabel(__filename));
 var express = require("express");
 var firebase = require("firebase");
@@ -14,11 +15,17 @@ router.post("/links", function(req, res) {
     var linkRef = firebase.database().ref("/loveletter/links");
     var newLinkRef = linkRef.push();
 
-    newLinkRef.set({
-        from : req.header("fbId"),
-        to : req.body.fbName,
-        message1 : req.body.message1,
-        message2 : req.body.message2
+    FacebookUtil.getInformation("id,last_name", req.header("fbToken"))
+    .then(function(facebook) {
+        return newLinkRef.set({
+            from : req.header("fbId"),
+            fromName : facebook.data.name,
+            to : req.body.fbName,
+            message1 : req.body.message1,
+            message2 : req.body.message2,
+            targetRead : 0,
+            anotherRead : 0
+        });
     })
     .then(function(result) {
         res.json({
