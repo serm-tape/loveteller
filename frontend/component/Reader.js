@@ -10,9 +10,9 @@ class Reader extends Component{
     constructor(){
         super()
         this.state = {
-            message: 'test',
+            message: null,
             message2: null,
-            name: 'eiei',
+            name: null,
             fromId: null
         }
     }
