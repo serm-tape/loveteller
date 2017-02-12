@@ -22,7 +22,7 @@ class Composer extends Component {
 	render(){
 		return (
 			<div style={{margin:'10px'}}>
-				<h1> เขียนข้อความ </h1>
+				<h1> เขียนข้อความถึงคนพิเศษ </h1>
 				<hr/>
 				ชื่อ facebook ของเค้าคนนั้น
 				<input
@@ -76,6 +76,7 @@ class Composer extends Component {
 	}
 
 	compose(){
+		FB.AppEvents.logEvent('SHARE_CLICKED')
 		axios.post(
 			'/api/links/',
 			{
@@ -92,6 +93,13 @@ class Composer extends Component {
 				name: 'วาเลนไทน์นี้ เรามีเรื่องจะบอก',
 				caption: 'คุณจะใช้คนคนนั้นหรือไม่ คลิก',
 				description: 'แอบชอบใคร อยากรู้ว่าเค้าคิดเหมือนกันไหม ให้ Love teller ช่วยบอก',
+			},(r)=>{
+				if (r&&r.error_message){	
+					FB.AppEvents.logEvent('SHARE_ERROR')
+				}else{
+					FB.AppEvents.logEvent('SHARE_SUCCESS')
+					alert(r && r.error_message || 'รอลุ้นได้เลย')
+				}
 			})
 		}).catch(e => {
 			window.alert('error')
