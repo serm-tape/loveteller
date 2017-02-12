@@ -21,7 +21,7 @@ class Composer extends Component {
 
 	render(){
 		return (
-			<div>
+			<div style={{margin:'10px'}}>
 				ชื่อ facebook ของเค้าคนนั้น
 				<input
 					onChange={this.updateFormValue.bind(this)}

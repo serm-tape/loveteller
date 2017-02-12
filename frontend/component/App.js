@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 
+import Footer from './Footer'
+
+import '../style/fullBody.scss'
+
 class App extends Component {
 	constructor(){
 		super()
@@ -48,7 +52,7 @@ class App extends Component {
 				fbMounted: this.state.fbMounted,
 				login: this.login.bind(this)
 			})
-			return cs
+			return (<div> {cs} <Footer /> </div>)
 		}
 	}
 
