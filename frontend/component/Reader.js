@@ -76,6 +76,7 @@ class Reader extends Component{
     }
 
     getLetterData(){
+        FB.AppEvents.logEvent('LETTER_READ')
         axios.get(
             `/api/links/${this.props.params.linkId}/letter`,
             {headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}},   
