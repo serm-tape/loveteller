@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "fedev": "webpack-dev-server --config $PWD/frontend/webpack.config.js",
-    "febuild": "webpack --display-error-details --config frontend/webpack.config.js",
+    "febuild": "webpack --display-error-details -p --config frontend/webpack.config.js",
     "bedev": "nodemon backend/index.js --exec babel-node --presets es2015,stage-0",
     "babel-node": "babel-node backend/index.js",
     "start": "npm run febuild && npm run babel-node"

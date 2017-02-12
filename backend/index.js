@@ -49,6 +49,10 @@ function setUpStaticFile(app) {
     	res.sendFile(path.resolve(__dirname, '../frontend', 'built', 'bundle.js'));
     });
 
+    app.get('/bundle.js.map', (req, res, next) => {
+        res.sendFile(path.resolve(__dirname, '../frontend', 'built', 'bundle.js.map'));
+    })
+
 
     app.get('*', (req, res, next) => {
     	res.sendFile(path.resolve(__dirname, '../frontend', 'index.html'));
