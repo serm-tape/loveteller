@@ -86,6 +86,7 @@ class Composer extends Component {
 			FB.ui({
 				method: 'feed',
 				link: `${window.location.host}/read/${response.data.linkId}`,
+				picture: `${window.location.host}/img/logo.png`,
 				name: 'วาเลนไทน์นี้ เรามีเรื่องจะบอก',
 				caption: 'คุณจะใช้คนคนนั้นหรือไม่ คลิก',
 				description: 'แอบชอบใคร อยากรู้ว่าเค้าคิดเหมือนกันไหม ให้ Love teller ช่วยบอก',
