@@ -2,6 +2,8 @@ import React, {Component} from "react"
 import {browserHistory} from "react-router"
 import axios from "axios"
 
+import '../style/anim.scss'
+
 //fb.com/read/{from-id}
 class Reader extends Component{
 
@@ -14,7 +16,7 @@ class Reader extends Component{
             fromId: null
         }
     }
-
+    
     componentDidUpdate(nextProps){
         if(nextProps.fbMounted != this.props.fbMounted){
             axios.get(
@@ -33,9 +35,13 @@ class Reader extends Component{
                     })
                 }
             )
-           
-
         }
+
+        //$('#who').delay(200).animate({opacity:1}, 1000)
+        //$('#message').delay(1000).animate({opacity:1}, 1000)
+        //$('#message2').delay(1000).animate({opacity:1}, 1000)
+        //$('#response-btn').delay(3000).animate({opacity:1}, 1000)
+        //$('#create-btn').delay(3000).animate({opacity:1}, 1000)
     }
 
     render(){
@@ -48,19 +54,30 @@ class Reader extends Component{
             title = `${this.state.name} อยากจะบอกคุณว่า`
         }
         return (
-            <div>
-                {title} <br/>
-                {this.state.message} <br/>
-                {this.state.message2} <br/>
+            <div style={{margin:'10px 0px', textAlign:'center'}}>
+                <div style={{backgroundColor: '#DAC891'}}>
+                    <div style={{margin:'10vh', padding:'10vh'}}>
+                        <h1 style={{animation:'fadein 2s forwards', opacity:0}}> {title} </h1>
+                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message} </h1>
+                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message2} </h1>
+                    </div>
+                </div>
                 <button 
                     className="btn btn-primary"
                     onClick={ () => {
                         FB.ui({method:'send', to:this.state.fromId, link:window.location.href})
                     }}
+                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
                 >
                     ตอบกลับว่าคุณก็คิดเช่นเดียวกัน
                 </button>
-                <button className="btn" onClick={()=>{browserHistory.push('/compose')}}> สร้างจดหมายของคุณเองบ้าง </button>
+                <button
+                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
+                    className="btn"
+                    onClick={()=>{browserHistory.push('/compose')}}
+                >
+                    สร้างจดหมายของคุณเองบ้าง
+                </button>
             </div>
         )
     }
