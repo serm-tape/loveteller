@@ -6,7 +6,7 @@ class Landing extends Component{
 		return(
 			<div style={{width:'100vw', textAlign:'center', height:'100vh'}}>
 				<div style={{margin: '10px'}}>
-					<img src="img/logo.png" alt="logo" style={{maxHeight:'50vh', maxWidth:'90vw'}}/>
+					<img src="/img/logo.png" alt="logo" style={{maxHeight:'50vh', maxWidth:'90vw'}}/>
 				</div>
 				<h1> Love Teller </h1>
 				<p> Love teller คือ จดหมายรักออนไลน์ที่ให้คุณแชร์จดหมายที่บรรจุข้อความของคุณไว้
@@ -21,15 +21,13 @@ class Landing extends Component{
 	}
 
 	login(){
-		const redirect = '/' + (this.props.routes[1] && this.props.routes[1].path || 'compose')
 		if(!this.props.fbid){
 			this.props.login((response)=>{
-				console.log(response)
-				if(response)
-					browserHistory.push(redirect)
+				if(response && window.location.pathname == '/')
+					browserHistory.push('compose')
 			})
 		}else{
-			browserHistory.push(redirect)
+			browserHistory.push('compose')
 		}
 	}
 }

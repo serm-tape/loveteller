@@ -17,24 +17,15 @@ class Reader extends Component{
         }
     }
     
-    componentDidUpdate(nextProps){
+    componentDidMount(){
+        if(this.props.fbMounted && this.props.fbid){
+            this.getLetterData()
+        }
+    }
+
+    componentDidUpdate(nextProps,nextState){
         if(nextProps.fbMounted != this.props.fbMounted){
-            axios.get(
-                `/api/links/${this.props.params.linkId}/letter`,
-                {headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}},   
-            ).then( ( response ) => {
-                FB.api(
-                    `/${response.data.fbId}`,
-                    (resp) => {
-                        this.setState({
-                            name:resp.name,
-                            fromId: response.data.fbId,
-                            message: response.data.message1,
-                            message2: response.data.message2,
-                        })
-                    })
-                }
-            )
+            this.getLetterData()
         }
 
         //$('#who').delay(200).animate({opacity:1}, 1000)
@@ -55,6 +46,8 @@ class Reader extends Component{
         }
         return (
             <div style={{margin:'10px 0px', textAlign:'center'}}>
+                <h1> อ่านข้อความ </h1>
+                <hr/>
                 <div style={{backgroundColor: '#DAC891'}}>
                     <div style={{margin:'10vh', padding:'10vh'}}>
                         <h1 style={{animation:'fadein 2s forwards', opacity:0}}> {title} </h1>
@@ -79,6 +72,26 @@ class Reader extends Component{
                     สร้างจดหมายของคุณเองบ้าง
                 </button>
             </div>
+        )
+    }
+
+    getLetterData(){
+        axios.get(
+            `/api/links/${this.props.params.linkId}/letter`,
+            {headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}},   
+        ).then( ( response ) => {
+            FB.api(
+                `/${response.data.fbId}`,
+                (resp) => {
+                    console.log(resp)
+                    this.setState({
+                        name:resp.name,
+                        fromId: response.data.fbId,
+                        message: response.data.message1,
+                        message2: response.data.message2,
+                    })
+                })
+            }
         )
     }
 }

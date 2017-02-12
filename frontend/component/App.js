@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import Footer from './Footer'
+import Landing from './Landing'
 
 import '../style/fullBody.scss'
 
@@ -45,6 +46,8 @@ class App extends Component {
 	render(){
 		if (!this.state.sdkLoaded){
 			return (<p> Initializing ... </p>)
+		}else if(!this.state.fbid){
+			return (<Landing fbid={this.state.fbid} login={this.login.bind(this)} routes={this.props.routes}/>)
 		}else{
 			const cs = React.cloneElement( this.props.children, {
 				fbid: this.state.fbid,
@@ -58,15 +61,14 @@ class App extends Component {
 
 	login(then){
 		FB.login(
-			(authResponse)=>{
-				this.changeAppState.bind(this),
-				then(authResponse)
+			(loginResponse)=>{
+				this.changeAppState(loginResponse.authResponse),
+				then(loginResponse)
 			},{scope:'email, user_friends'}
 		)
 	}
 
 	changeAppState(authResponse){
-		console.log(authResponse)
 		this.setState({
 			fbid: authResponse.userID,
 			fbToken: authResponse.accessToken,
