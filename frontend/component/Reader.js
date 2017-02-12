@@ -10,9 +10,9 @@ class Reader extends Component{
     constructor(){
         super()
         this.state = {
-            message: null,
+            message: 'test',
             message2: null,
-            name: null,
+            name: 'eiei',
             fromId: null
         }
     }
@@ -50,9 +50,9 @@ class Reader extends Component{
                 <hr/>
                 <div style={{backgroundColor: '#DAC891'}}>
                     <div style={{margin:'10vh', padding:'10vh'}}>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0}}> {title} </h1>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message} </h1>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message2} </h1>
+                        <h1 style={{animation:'2s ease 0s fadein'}}> {title} </h1>
+                        <h1 style={{animation:'4s ease 0s fadein2'}}> {this.state.message} </h1>
+                        <h1 style={{animation:'4s ease 0s fadein2'}}> {this.state.message2} </h1>
                     </div>
                 </div>
                 <button 
@@ -60,12 +60,12 @@ class Reader extends Component{
                     onClick={ () => {
                         FB.ui({method:'send', to:this.state.fromId, link:window.location.href})
                     }}
-                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
+                    style={{animation: '6s ease 0s fadein3'}}
                 >
                     ตอบกลับว่าคุณก็คิดเช่นเดียวกัน
                 </button>
                 <button
-                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
+                    style={{animation: '6s ease 0s fadein3'}}
                     className="btn"
                     onClick={()=>{browserHistory.push('/compose')}}
                 >
