@@ -17,24 +17,15 @@ class Reader extends Component{
         }
     }
     
-    componentDidUpdate(nextProps){
+    componentDidMount(){
+        if(this.props.fbMounted && this.props.fbid){
+            this.getLetterData()
+        }
+    }
+
+    componentDidUpdate(nextProps,nextState){
         if(nextProps.fbMounted != this.props.fbMounted){
-            axios.get(
-                `/api/links/${this.props.params.linkId}/letter`,
-                {headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}},   
-            ).then( ( response ) => {
-                FB.api(
-                    `/${response.data.fbId}`,
-                    (resp) => {
-                        this.setState({
-                            name:resp.name,
-                            fromId: response.data.fbId,
-                            message: response.data.message1,
-                            message2: response.data.message2,
-                        })
-                    })
-                }
-            )
+            this.getLetterData()
         }
 
         //$('#who').delay(200).animate({opacity:1}, 1000)
@@ -55,11 +46,13 @@ class Reader extends Component{
         }
         return (
             <div style={{margin:'10px 0px', textAlign:'center'}}>
+                <h1> อ่านข้อความ </h1>
+                <hr/>
                 <div style={{backgroundColor: '#DAC891'}}>
                     <div style={{margin:'10vh', padding:'10vh'}}>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0}}> {title} </h1>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message} </h1>
-                        <h1 style={{animation:'fadein 2s forwards', opacity:0, animationDelay:'3s'}}> {this.state.message2} </h1>
+                        <h1 style={{animation:'2s ease 0s fadein'}}> {title} </h1>
+                        <h1 style={{animation:'4s ease 0s fadein2'}}> {this.state.message} </h1>
+                        <h1 style={{animation:'4s ease 0s fadein2'}}> {this.state.message2} </h1>
                     </div>
                 </div>
                 <button 
@@ -67,18 +60,39 @@ class Reader extends Component{
                     onClick={ () => {
                         FB.ui({method:'send', to:this.state.fromId, link:window.location.href})
                     }}
-                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
+                    style={{animation: '6s ease 0s fadein3'}}
                 >
                     ตอบกลับว่าคุณก็คิดเช่นเดียวกัน
                 </button>
                 <button
-                    style={{animation: 'fadein 2s forwards', opacity:0, animationDelay:'6s'}}
+                    style={{animation: '6s ease 0s fadein3'}}
                     className="btn"
                     onClick={()=>{browserHistory.push('/compose')}}
                 >
                     สร้างจดหมายของคุณเองบ้าง
                 </button>
             </div>
+        )
+    }
+
+    getLetterData(){
+        FB.AppEvents.logEvent('LETTER_READ')
+        axios.get(
+            `/api/links/${this.props.params.linkId}/letter`,
+            {headers:{fbId:this.props.fbid, fbToken:this.props.fbToken, 'Content-Type':'application/json'}},   
+        ).then( ( response ) => {
+            FB.api(
+                `/${response.data.fbId}`,
+                (resp) => {
+                    console.log(resp)
+                    this.setState({
+                        name:resp.name,
+                        fromId: response.data.fbId,
+                        message: response.data.message1,
+                        message2: response.data.message2,
+                    })
+                })
+            }
         )
     }
 }
