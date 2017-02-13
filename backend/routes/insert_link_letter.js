@@ -19,8 +19,7 @@ router.post("/links", function(req, res) {
     .then(function(facebook) {
         return newLinkRef.set({
             from : req.header("fbId"),
-            fromName : facebook.data.name,
-            to : req.body.fbName,
+            to : CommonUtil.hashPassword(CommonUtil.createSalt(), req.body.fbName),
             message1 : req.body.message1,
             message2 : req.body.message2,
             targetRead : 0,

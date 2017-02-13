@@ -28,6 +28,8 @@ router.get("/links/:linkId/letter", function(req, res) {
             anotherRead :  letter.anotherRead | 0
         };
 
+
+
         if (letter.from === req.header("fbId")) {
             res.json({
                 fbId : letter.from,
@@ -40,7 +42,9 @@ router.get("/links/:linkId/letter", function(req, res) {
         var returnMessage = {
             fbId : letter.from
         };
-        if (letter.to === facebookInfo.data.name) {
+        var targetUser = CommonUtil.validateHashPassword(facebookInfo.data.name, letter.to);
+
+        if (targetUser) {
             returnMessage.message1 = letter.message1;
             updateData.targetRead = updateData.targetRead + 1
         } else {
