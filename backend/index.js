@@ -3,8 +3,10 @@ require("babel-core").transform("code");
 
 import Promise from "bluebird";
 import express from 'express';
+import https from 'https';
 import path from 'path';
-var fs = Promise.promisifyAll(require("fs-extra"));
+import fs from 'fs';
+var fse = Promise.promisifyAll(require("fs-extra"));
 
 //////////////////////
 // SETUP PROMISE
@@ -44,7 +46,7 @@ function setUpStaticFile(app) {
     app.use('/favicon.ico', express.static(path.resolve(__dirname, '../frontend/public/img/favicon.ico')));
     app.use('/img/', express.static(path.resolve(__dirname, '../frontend/public/img')));
     app.use('/font-awesome/', express.static(path.resolve(__dirname, '../node_modules/font-awesome')));
-
+    app.use('/.well-known/', express.static(path.resolve(__dirname, '../frontend/public/.well-known')));
     app.get('/bundle.js', (req, res, next) => {
     	res.sendFile(path.resolve(__dirname, '../frontend', 'built', 'bundle.js'));
     });
@@ -82,9 +84,15 @@ Promise.resolve()
     return setUpStaticFile(app);
 })
 .then(function() {
-    app.listen(3004, function () {
+    const key = fs.readFileSync( '/etc/letsencrypt/live/loveteller.sermtape.com/privkey.pem','utf8');
+    const cert = fs.readFileSync( '/etc/letsencrypt/live/loveteller.sermtape.com/fullchain.pem', 'utf8');
+    const server = https.createServer(
+        {key: key, cert: cert},
+        app
+    )  
+    server.listen(443, function () {
         logger.info("Please set up your database at api/setup ");
-    	logger.info('Example app listening on port 3004!');
+    	logger.info('Example app listening on port 443!');
     });
 })
 .catch(function(ex){
